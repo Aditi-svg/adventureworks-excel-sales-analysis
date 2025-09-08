@@ -1,42 +1,103 @@
-Adventure Works Sales Analysis
-Overview
+# AdventureWorks Sales Analysis
+![Excel](https://img.shields.io/badge/Excel-Power%20Query%20%7C%20Power%20Pivot-217346)
+![DAX](https://img.shields.io/badge/DAX-Time%20Intelligence-blue)
+![Status](https://img.shields.io/badge/Project-Active-brightgreen)
+![License](https://img.shields.io/badge/License-MIT-green)
 
-This workbook explores the Adventure Works sales dataset using Power Pivot in Excel. The underlying data model contains seven related tables—Customer, Date, Product, Reseller, Sales, Sales Order and Sales Territory. The Sales table acts as the fact table, while the other tables are dimensions. Relationships are defined on key fields (for example, SalesOrderLineKey and date keys) so that DAX measures and slicers can filter the data by customer segments, product categories, reseller types, territories and time periods.
+> Excel + Power Query + DAX exploration of the classic **AdventureWorks** sales dataset.
 
-Measures
+**Quick links:**  
+- ▶️ **Open workbook:** `excel/AdventureWorks_Sales_Analysis.xlsx`  
+- 📷 **Screenshots:** `images/`  
+- 🧮 **Measures file:** `measures/DAX_Measures.txt`  
+- 🧰 **Date table M:** `powerquery/DateTable_M.txt`
 
-A suite of DAX measures has been created to analyse performance from multiple angles:
+---
 
-Total_sales – Sum of the extended amount (revenue) for each sales line.
+## 👀 Overview
+This workbook analyzes AdventureWorks sales using **Power Pivot** in Excel.  
+The star schema contains **7 tables**:
 
-Profit – Total sales minus total product cost.
+- **Fact:** `Sales`  
+- **Dimensions:** `Customer`, `Date`, `Product`, `Reseller`, `Sales Order`, `Sales Territory`
 
-Gross_Margin_pct – Profit divided by total sales.
+Relationships use keys like `SalesOrderLineKey` and the **date keys**, enabling DAX measures and slicers to filter by **customer segments**, **product categories**, **reseller types**, **territories**, and **time**.
 
-Units_sold – Total quantity ordered.
+---
 
-Order_lines and Distinct_Order – Count of distinct sales order lines and orders.
+## 🧭 Table of Contents
+- [Overview](#-overview)
+- [Get Started](#-get-started)
+- [Measures (click to expand)](#-measures-click-to-expand)
+- [Reports / Worksheets](#-reports--worksheets)
+- [Repo Structure](#-repo-structure)
+- [Troubleshooting](#-troubleshooting)
+- [Notes](#-notes)
 
-AOV (Average Order Value) – Total sales divided by the number of distinct orders.
+---
 
-SalesMTD/SalesQTD/SalesYTD – Month‑to‑date, quarter‑to‑date and year‑to‑date cumulative sales using time‑intelligence functions.
+## 🚀 Get Started
+- [ ] Open `excel/AdventureWorks_Sales_Analysis.xlsx`  
+- [ ] Enable **Power Pivot** (File → Options → Add-ins → COM Add-ins)  
+- [ ] **Refresh All** to load the model  
+- [ ] Use slicers (Year, Country, Channel, Category) to explore
 
-Sales_LY – Sales for the same period last year.
+> Tip: Time intelligence requires a proper **Date** table marked as *Date Table* and a **valid relationship** from `Sales[date key]` to `Date[date key]`.
 
-YOY% – Year‑over‑year growth, calculated as (Total_sales − Sales_LY) ÷ Sales_LY.
+---
 
-Additional measures for discount amounts, extended amount, product cost and a rolling 12‑month total provide further insight.
+## 🧮 Measures (click to expand)
+<details>
+<summary><b>Core KPIs</b></summary>
 
-Reporting worksheets
+- **Total_Sales** – Sum of sales revenue (extended amount).  
+- **Profit** – `Total_Sales − Total_Product_Cost`.  
+- **Gross_Margin_pct** – `Profit ÷ Total_Sales`.  
+- **Units_Sold** – Total quantity ordered.  
+- **Order_Lines** & **Distinct_Order** – Distinct counts of lines and orders.  
+- **AOV (Average Order Value)** – `Total_Sales ÷ Distinct_Order`.
+</details>
 
-Several pivot tables and charts are provided to visualise these measures:
+<details>
+<summary><b>Time Intelligence</b></summary>
 
-Monthly Sales Performance (Sheet 1) – Compares total sales, profit, gross margin %, units sold, distinct orders and average order value by month and year, with slicers to filter by year.
+- **SalesMTD / SalesQTD / SalesYTD** – Month-/Quarter-/Year-to-date sales.  
+- **Sales_LY** – Sales for the **same period last year**.  
+- **YOY%** – Year-over-year % growth: `(Total_Sales − Sales_LY) ÷ Sales_LY`.  
+- **Rolling 12M Sales** – 12-month rolling total.
+</details>
 
-YOY Growth by Country (Sheet 2) – Shows year‑over‑year percentage changes in total sales for each country, allowing easy identification of markets with accelerating or slowing growth.
+<details>
+<summary><b>Pricing & Discount</b></summary>
 
-Category/Reseller Breakdown (Sheet 5) – Summarises total sales by product category (Accessories, Bikes, Clothing, Components) and by reseller/business type, with a year slicer.
+- **Extended Amount / Discount Amount / Discount %**  
+- **Product cost** measures (e.g., `Total_Product_Cost`, `Std Cost × Qty`)  
+</details>
 
-Product Performance (Sheet 6) – Lists individual products along with units sold, gross margin % and profit, so you can rank products by profitability or sales volume.
+> Full DAX snippets live in **`/measures/DAX_Measures.txt`** for easy copy/paste.
 
-MTD/YTD Sales Summary (Sheet 7) – Tracks month‑to‑date and year‑to‑date sales by month, with slicers for reseller and product category.
+---
+
+## 📊 Reports / Worksheets
+- **Sheet 1 — Monthly Sales Performance**  
+  Compare **Total Sales, Profit, Gross Margin %, Units Sold, Distinct Orders, AOV** by **Month/Year** with a Year slicer.
+
+- **Sheet 2 — YoY Growth by Country**  
+  Year-over-year % changes in Total Sales per **Country** to spot accelerating/slowing markets.
+
+- **Sheet 5 — Category / Reseller Breakdown**  
+  Total Sales by **Product Category** (Accessories, Bikes, Clothing, Components) and **Reseller/Business Type**, with a Year slicer.
+
+- **Sheet 6 — Product Performance**  
+  Rank products using **Units Sold, Gross Margin %, Profit** (identify winners/laggards).
+
+- **Sheet 7 — MTD / YTD Sales Summary**  
+  Track **SalesMTD** and **SalesYTD** by Month; slicers for **Reseller** and **Product Category**.
+
+> Optional: Add screenshots to `/images` and embed them here:
+>
+> `![Monthly Sales vs LY](images/monthly_sales_ly.png)`  
+> `![Channel Mix](images/channel_mix.png)`
+
+---
+
