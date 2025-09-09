@@ -1,0 +1,17 @@
+AOV =DIVIDE([Total_sales], [Disctinct_Order])
+Discount Amount =[Total_extended_amount]-[Total_sales]
+Discount% =DIVIDE([Discount Amount],[Total_extended_amount])
+Disctinct_Order =DISTINCTCOUNT(SalesOrder[Sales Order])
+Gross_Margin_pct =DIVIDE([Profit],[Total_sales])
+Order_lines=DISTINCTCOUNT(SalesOrder[Sales Order Line])
+Profit =[Total_sales]-[Total_product_cost]
+Rolling 12M Sales =CALCULATE([Total_sales], DATESINPERIOD('Date'[Date], MAX('Date'[Date]), -12, MONTH))
+SalesMTD =TOTALMTD([Total_sales], Sales[DateKey])
+SalesQTD =TOTALQTD([Total_sales], 'Date'[Date])
+SalesYTD =TOTALYTD([Total_sales], 'Date'[Date])
+Sales_LY =CALCULATE([Total_sales], SAMEPERIODLASTYEAR('Date'[Date]))
+Total_extended_amount =SUM(Sales[Extended Amount])
+Total_product_cost =SUM(Sales[Total Product Cost])
+Total_sales =SUM(Sales[Sales Amount])
+Units_sold =SUM(Sales[Order Quantity])
+YOY% =DIVIDE([Total_sales]-Sales[Sales_LY], Sales[Sales_LY])
