@@ -31,9 +31,7 @@ Relationships use keys like `SalesOrderLineKey` and the **date keys**, enabling 
 - [Get Started](#-get-started)
 - [Measures (click to expand)](#-measures-click-to-expand)
 - [Reports / Worksheets](#-reports--worksheets)
-- [Repo Structure](#-repo-structure)
-- [Troubleshooting](#-troubleshooting)
-- [Notes](#-notes)
+
 
 ---
 
@@ -95,10 +93,6 @@ Relationships use keys like `SalesOrderLineKey` and the **date keys**, enabling 
 - **Sheet 7 — MTD / YTD Sales Summary**  
   Track **SalesMTD** and **SalesYTD** by Month; slicers for **Reseller** and **Product Category**.
 
-> Optional: Add screenshots to `/images` and embed them here:
->
-> `![Monthly Sales vs LY](images/monthly_sales_ly.png)`  
-> `![Channel Mix](images/channel_mix.png)`
 
 ---
 
