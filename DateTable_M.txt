@@ -1,0 +1,80 @@
+// DateTable_M.txt
+// Power Query (M) code to generate a robust Date table for AdventureWorks
+// Paste this into: Power Query > New Source > Blank Query > Advanced Editor
+// Then rename the query to: Date
+
+let
+    // ===== CONFIG =====
+    // If your Sales query name is not exactly "Sales", change the next line to your query name.
+    SourceSales = Sales,
+
+    // If your Sales has an integer [date key] like 20170729, map it to Date here.
+    // Change the column name below if yours differs (e.g., [orderdate key], [date key]).
+    SalesWithDate =
+        try
+            Table.TransformColumns(
+                SourceSales,
+                {{"date key",
+                    each
+                        let s = Text.PadStart(Text.From(_), 8, "0")
+                        in  #date(
+                                Number.FromText(Text.Start(s, 4)),
+                                Number.FromText(Text.Range(s, 4, 2)),
+                                Number.FromText(Text.Range(s, 6, 2))
+                           ),
+                    type date}}
+            )
+        otherwise SourceSales,
+
+    // Compute min/max dates and add a 1-year buffer on both sides
+    MinDate = Date.StartOfYear(List.Min(Table.Column(SalesWithDate, "date key"))),
+    MaxDate = Date.EndOfYear(List.Max(Table.Column(SalesWithDate, "date key"))),
+    StartDate = Date.AddYears(MinDate, -1),
+    EndDate   = Date.AddYears(MaxDate,  1),
+
+    // Build a continuous list of dates
+    DateList =
+        List.Dates(
+            StartDate,
+            Duration.Days(EndDate - StartDate) + 1,
+            #duration(1, 0, 0, 0)
+        ),
+    DateTable = Table.FromList(DateList, Splitter.SplitByNothing(), {"Date"}, null, ExtraValues.Error),
+
+    // Enrich with calendar attributes
+    AddYear        = Table.AddColumn(DateTable, "Year",        each Date.Year([Date]), Int64.Type),
+    AddMonthNum    = Table.AddColumn(AddYear,   "Month Number",each Date.Month([Date]), Int64.Type),
+    AddMonthName   = Table.AddColumn(AddMonthNum,"Month",      each Date.MonthName([Date]), type text),
+    AddDay         = Table.AddColumn(AddMonthName,"Day",       each Date.Day([Date]), Int64.Type),
+    AddQuarter     = Table.AddColumn(AddDay,     "Quarter",    each "Q" & Text.From(Date.QuarterOfYear([Date])), type text),
+    AddYearMonth   = Table.AddColumn(AddQuarter, "YearMonth",  each Text.From([Year]) & "-" & Text.PadStart(Text.From([Month Number]),2,"0"), type text),
+    AddMonthKey    = Table.AddColumn(AddYearMonth,"Month Key", each [Year]*100 + [Month Number], Int64.Type),
+    AddDateKey     = Table.AddColumn(AddMonthKey,"Date Key",   each [Year]*10000 + [Month Number]*100 + [Day], Int64.Type),
+    AddWeekStart   = Table.AddColumn(AddDateKey, "Start of Week", each Date.StartOfWeek([Date], Day.Monday), type date),
+    AddWeekOfYear  = Table.AddColumn(AddWeekStart,"Week of Year",  each Date.WeekOfYear([Date], Day.Monday), Int64.Type),
+
+    // ===== Optional fiscal calendar (set your fiscal year start month) =====
+    FiscalStartMonth = 7, // 1=Jan ... 7=Jul
+    AddFiscalYear =
+        Table.AddColumn(
+            AddWeekOfYear,
+            "Fiscal Year",
+            each let y = Date.Year([Date]) in if Date.Month([Date]) >= FiscalStartMonth then y else y - 1,
+            Int64.Type
+        ),
+    AddFiscalQuarter =
+        Table.AddColumn(
+            AddFiscalYear,
+            "Fiscal Quarter",
+            each
+                let
+                    shifted = Number.Mod([Month Number] - FiscalStartMonth + 12, 12) + 1,
+                    fq = Number.RoundUp(shifted / 3)
+                in "Q" & Text.From(fq),
+            type text
+        ),
+
+    // Final sort
+    Sorted = Table.Sort(AddFiscalQuarter, {{"Date", Order.Ascending}})
+in
+    Sorted
