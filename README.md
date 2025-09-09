@@ -6,8 +6,9 @@
 
 > Excel + Power Query + DAX exploration of the classic **AdventureWorks** sales dataset.
 
-**Quick links:**  
-- ▶️ **Open workbook:** `excel/AdventureWorks_Sales_Analysis.xlsx`  
+**Quick links:** 
+- ▶️ **Open raw workbook:** `raw_file/AdventureWorks Sales.xlsx`
+- ▶️ **Open data modelling workbook:** `excel/AdventureWorks_Sales_Analysis.xlsx`  
 - 📷 **Screenshots:** `images/`  
 - 🧮 **Measures file:** `measures/DAX_Measures.txt`  
 - 🧰 **Date table M:** `powerquery/DateTable_M.txt`
