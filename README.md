@@ -8,7 +8,7 @@
 
 **Quick links:** 
 - ▶️ **Open raw workbook:** `raw_file/AdventureWorks Sales.xlsx`
-- ▶️ **Open data modelling workbook:** `excel/AdventureWorks_Sales_Analysis.xlsx`  
+- ▶️ **Open data modelling workbook:** `excel/Adventure_data_modelling.xlsb.xlsx`  
 - 📷 **Screenshots:** `images/`  
 - 🧮 **Measures file:** `measures/DAX_Measures.txt`  
 - 🧰 **Date table M:** `powerquery/DateTable_M.txt`
